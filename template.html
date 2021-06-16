@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Amazon Rekognition LTK POC Results</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+  </head>
+  <body>
+    <h1>Amazon Rekognition - Facial Analysis</h1>
+    {% for category in categories %}
+    <h3>Category: {{category["name"]}}</h3>
+    <table data-toggle="table">
+      <thead>
+        <tr>
+          <th>LTK Image</th>
+          <th>Results</th>
+          <th>URL</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for categoryltk in category["ltks"] %}
+        <tr>
+            <td><img src={{categoryltk["image_url"]}}></td>
+            <td>
+              {% if categoryltk.face_found %}
+                <ul class="list-group">
+                {% for face in categoryltk.faces %}
+                Face #{{loop.index}}
+                  <li class="list-group-item">Confidence: {{face.confidence}}</li>
+                  <li class="list-group-item">Age Range: {{face.age_range}}</li>
+                  <li class="list-group-item">Gender: {{face.gender}} | Confidence: {{face.gender_confidence}}</li>
+                {% endfor %}
+                </ul>
+              {% else %}
+                No face detected.
+              {% endif %}
+            </td>
+            <td><a href="{{categoryltk["url"]}}" target="_blank">{{categoryltk["url"]}}</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endfor %}
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+  </body>
+</html>
